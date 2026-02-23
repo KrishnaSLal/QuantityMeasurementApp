@@ -1,9 +1,10 @@
 package com.apps.quantitymeasurement;
 
-
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
 import com.apps.quantitymeasurement.Length.LengthUnit;
+
 
 public class QuantityMeasurementAppTest {
     @Test
@@ -70,14 +71,14 @@ public class QuantityMeasurementAppTest {
     	assertTrue(yard.equals(inches));
     }
     
-    @Test
-    public void centimeterEquals39Point3701Inches() {
-    	Length centimeter = new Length(1.0, LengthUnit.CENTIMETERS);
-    	Length inches = new Length(39.3701, LengthUnit.INCHES);
-    	
-    	assertTrue(centimeter.equals(inches));
-    }
     
+    @Test
+    public void hundredCentimeterEquals39Point3701Inches() {
+        Length centimeter = new Length(100.0, LengthUnit.CENTIMETERS);
+        Length inches = new Length(39.3701, LengthUnit.INCHES);
+
+        assertTrue(centimeter.equals(inches));
+    }
     @Test
     public void threeFeetEqualsOneYard() {
         Length feet = new Length(3.0, LengthUnit.FEET);
@@ -148,5 +149,21 @@ public class QuantityMeasurementAppTest {
     	Length yards = new Length(1.0, LengthUnit.YARDS);
     	Length feets = new Length(3.0, LengthUnit.FEET); 
         assertTrue(QuantityMeasurementApp.demonstrateLengthEquality(yards, feets));
+    }
+    
+    @Test 
+    public void convertFeetToInches() {
+    	Length lengthInInches = QuantityMeasurementApp.demonstrateLengthConversion(3.0, LengthUnit.FEET, LengthUnit.INCHES);
+    	Length expectedLength = new Length(36.0, LengthUnit.INCHES);
+    	assertTrue(QuantityMeasurementApp.demonstrateLengthEquality(lengthInInches, expectedLength));
+    }
+    
+    @Test
+    public void convertYardsToInchesUsingOverloadedMethod() {
+    	Length lengthInYards = new Length(2.0, LengthUnit.YARDS);
+    	Length lengthInInches = QuantityMeasurementApp.demonstrateLengthConversion(lengthInYards, LengthUnit.INCHES);
+    	Length expectedLength = new Length(72.0, LengthUnit.INCHES);
+    	
+    	assertTrue(QuantityMeasurementApp.demonstrateLengthEquality(lengthInInches, expectedLength));
     }
 }
