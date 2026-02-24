@@ -36,6 +36,7 @@ This ensures:
 ---
 
 📂 Project Structure
+--
 
 ```text
 QuantityMeasurementApp
