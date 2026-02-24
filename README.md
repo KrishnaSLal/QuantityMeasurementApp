@@ -60,4 +60,7 @@ QuantityMeasurementApp
 
 ---
 
-- 🔗Code Link : (https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC1-FeetEquality)
+🔗*Code Link*
+
+[UC1: FeetEquality](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC1-FeetEquality)
+---
