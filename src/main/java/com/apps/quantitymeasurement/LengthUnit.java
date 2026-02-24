@@ -1,37 +1,33 @@
 package com.apps.quantitymeasurement;
 
-public enum LengthUnit implements IMeasurable {
+public enum LengthUnit implements IMeasurable{
 
-	FEET(12.0),
-	INCHES(1.0),
-	YARDS(36.0),
-	CENTIMETERS(1 / 2.54);
+    FEET(12.0),
+    INCHES(1.0),
+    YARDS(36.0),
+    CENTIMETERS(0.393701);
 
-	private final double conversionFactor;
+    private final double conversionFactor;
 
-	LengthUnit(double conversionFactor) {
-		this.conversionFactor = conversionFactor;
-	}
+    LengthUnit(double conversionFactor) {
+        this.conversionFactor = conversionFactor;
+    }
 
-	@Override
-	public double getConversionFactor() {
-		return conversionFactor;
-	}
+    public double getConversionFactor() {
+        return conversionFactor;
+    }
 
-	@Override
-	public double convertToBaseUnit(double value) {
+    public double convertToBaseUnit(double value) {
         double result = value * conversionFactor;
-        return Math.round(result * 1_000_000.0) / 1_000_000.0;
+        return Math.round(result * 100.0) / 100.0;
     }
-	
-	@Override
-	public double convertFromBaseUnit(double baseValue) {
+
+    public double convertFromBaseUnit(double baseValue) {
         double result = baseValue / conversionFactor;
-        return Math.round(result * 1_000_000.0) / 1_000_000.0;
+        return Math.round(result * 100.0) / 100.0;
     }
-	
-	@Override
-	public String getUnitName() {
-	    return name();
-	}
+    
+    public String getUnitName() {
+    	return this.name();
+    }
 }
