@@ -148,6 +148,6 @@ Runtime protection:
 
 🔗*Code Link*
 
-[UC3: GenericQuantity](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC11-Volume-Measurement/src)
+[UC11: VolumeMeasurement](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC11-Volume-Measurement/src)
 
 ---
