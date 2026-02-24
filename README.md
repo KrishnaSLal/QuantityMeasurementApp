@@ -35,6 +35,27 @@ This ensures:
 
 ---
 
+📂 Project Structure
+
+```text
+QuantityMeasurementApp
+│
+├── src
+│   ├── main
+│   │   └── java
+│   │       └── com.apps.quantitymeasurement
+│   │
+│   └── test
+│       └── java
+│           └── com.apps.quantitymeasurement
+│
+├── pom.xml
+└── README.md
+```
+
+---
+
+
 # 📚 Use Cases
 
 ---
