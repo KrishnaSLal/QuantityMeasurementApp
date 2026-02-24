@@ -42,3 +42,8 @@ It only compares:
 - Feet and Inches are treated as separate types and are not considered equal to each other.
 
 ---
+
+🔗*Code Link*
+
+[UC2: InchEquality](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC2-InchEquality/src)
+---
