@@ -35,6 +35,7 @@ public class QuantityMeasurementAppTest {
 		assertFalse(new Quantity<>(1.0, LengthUnit.CENTIMETERS).equals(new Quantity<>(1.0, LengthUnit.FEET)));
 	}
 
+	
 	@Test
 	public void testEquality_MultiUnit_TransitiveProperty() {
 		Quantity<LengthUnit> yard = new Quantity<>(1.0, LengthUnit.YARDS);
@@ -287,6 +288,7 @@ public class QuantityMeasurementAppTest {
 		assertEquals(new Quantity<>(24.0, LengthUnit.INCHES), result);
 	}
 
+	
 	@Test
 	public void testAddition_ExplicitTargetUnit_Yards() {
 
@@ -414,6 +416,7 @@ public class QuantityMeasurementAppTest {
 		assertEquals(original, backToFeet, 0.01);
 	}
 
+	
 	@Test
 	public void testEquality_KilogramToKilogram_SameValue() {
 		assertTrue(new Quantity<>(1.0, WeightUnit.KILOGRAM).equals(new Quantity<>(1.0, WeightUnit.KILOGRAM)));
@@ -538,6 +541,7 @@ public class QuantityMeasurementAppTest {
 		Quantity<WeightUnit> result = new Quantity<>(5.0, WeightUnit.KILOGRAM).convertTo(WeightUnit.KILOGRAM);
 		assertEquals(new Quantity<>(5.0, WeightUnit.KILOGRAM), result);
 	}
+	
 
 	@Test
 	public void testConversion_Weight_ZeroValue() {
@@ -1091,6 +1095,7 @@ public class QuantityMeasurementAppTest {
 		assertEquals(9.5, result.getValue(), EPSILON);
 	}
 
+	
 	@Test
 	void testSubtraction_ExplicitTargetUnit_Inches() {
 		Quantity<LengthUnit> result = new Quantity<>(10.0, LengthUnit.FEET)
