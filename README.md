@@ -290,3 +290,118 @@ No modification required in:
 [UC11: VolumeMeasurement](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC11-Volume-Measurement/src)
 
 ---
+
+
+---
+
+## 🔹 UC12 – Advanced Arithmetic Operations
+
+Expanded arithmetic capabilities across all measurable categories.
+
+### Added:
+- `subtract()`
+- `divide()`
+- Overloaded arithmetic methods with target unit support
+
+### Supported:
+- Cross-unit arithmetic
+- Base-unit normalization before operation
+- Immutable result objects
+
+### Ensured:
+- Subtraction remains **non-commutative**
+- Division returns **dimensionless double**
+- Cross-category arithmetic prohibited
+
+📌 Focus: Complete arithmetic support with strict validation.
+
+---
+
+🔗 *Code Link*
+
+[UC12: Subtraction and Division Operations](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC12-QuantitySubtractionAndDivision/src)
+
+---
+
+## 🔹 UC13 – Centralized Arithmetic Refactor
+
+🎯 Major Internal Refactor (No Public API Change)
+
+Refactored arithmetic logic to remove duplication and improve maintainability.
+
+### Introduced:
+```
+ArithmeticOperation enum
+DoubleBinaryOperator (Lambda-based dispatch)
+Centralized validation helper
+Core base-unit arithmetic method
+```
+
+### Achieved:
+- DRY principle fully enforced
+- Centralized validation logic
+- Clean separation of concerns
+- No behavioral changes from UC12
+- All existing test cases passed without modification
+
+📌 Focus: Clean architecture + lambda-driven arithmetic dispatch.
+
+---
+
+🔗 *Code Link*
+
+[UC13: Centralized Arithemaatic Logic](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC13-Centralized-Arithmetic-Logic/src)
+
+---
+
+
+## 🔹 UC14 – Temperature Measurement Support
+
+Extended system to support **Temperature category** with controlled arithmetic capability.
+
+### Added:
+- `TemperatureUnit` enum
+  - Celsius (base)
+  - Fahrenheit
+  - Kelvin
+
+### Special Behavior:
+- Supports equality
+- Supports unit conversion
+- Does NOT support arithmetic operations
+
+### Architectural Enhancement:
+- Refactored `IMeasurable` to support optional arithmetic
+- Introduced capability-based validation
+- Used default methods + functional interface
+- Preserved backward compatibility
+
+📌 Focus: Extending system while respecting domain constraints.
+
+---
+
+🔗 *Code Link*
+
+[UC14: Temperature Measurement](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC14-TemperatureMeasurement/src)
+
+---
+
+# 🚀 Final Architecture Status
+
+After UC14, the system now supports:
+
+- ✅ Length
+- ✅ Weight
+- ✅ Volume
+- ✅ Temperature (conversion + equality only)
+
+### Design Highlights:
+- Generic architecture (`Quantity<U extends IMeasurable>`)
+- Strict cross-category type safety
+- Immutable domain model
+- Centralized arithmetic engine
+- Lambda-based operation dispatch
+- Fully scalable measurement system
+- All use cases covered through TDD
+
+---
