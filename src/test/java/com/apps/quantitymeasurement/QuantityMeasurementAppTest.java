@@ -5,6 +5,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.reflect.Method;
 
+import com.apps.quantitymeasurement.controller.QuantityMeasurementController;
+import com.apps.quantitymeasurement.dto.QuantityDTO;
+import com.apps.quantitymeasurement.repository.IQuantityMeasurementRepository;
+import com.apps.quantitymeasurement.repository.QuantityMeasurementCacheRepository;
+import com.apps.quantitymeasurement.service.IQuantityMeasurementService;
+import com.apps.quantitymeasurement.service.QuantityMeasurementServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+
+
 public class QuantityMeasurementAppTest {
 	private static final double EPSILON = 0.0001;
 	@Test
@@ -1056,5 +1065,80 @@ public class QuantityMeasurementAppTest {
 
         assertEquals(25.0, temp.getValue(), EPSILON);
         assertEquals(TemperatureUnit.CELSIUS, temp.getUnit());
+    }
+    
+    private QuantityMeasurementController controller;
+
+    @BeforeEach
+    void setUp() {
+        IQuantityMeasurementRepository repository = QuantityMeasurementCacheRepository.getInstance();
+        IQuantityMeasurementService service = new QuantityMeasurementServiceImpl(repository);
+        controller = new QuantityMeasurementController(service);
+    }
+
+    @Test
+    void testCompareFeetAndInches() {
+        assertTrue(controller.performComparison(
+                new QuantityDTO(1.0, "FEET"),
+                new QuantityDTO(12.0, "INCHES")
+        ));
+    }
+
+    @Test
+    void testConvertGallonsToLiters() {
+        QuantityDTO result = controller.performConversion(
+                new QuantityDTO(1.0, "GALLON"),
+                "LITRE"
+        );
+        assertEquals("LITRE", result.getUnit());
+        assertEquals(3.78541, result.getValue(), 0.01);
+    }
+
+    @Test
+    void testAddition() {
+        QuantityDTO result = controller.performAddition(
+                new QuantityDTO(1.0, "FEET"),
+                new QuantityDTO(2.0, "INCHES")
+        );
+        assertEquals("FEET", result.getUnit());
+        assertEquals(1.1666, result.getValue(), 0.01);
+    }
+
+    @Test
+    void testSubtraction() {
+        QuantityDTO result = controller.performSubtraction(
+                new QuantityDTO(3.0, "FEET"),
+                new QuantityDTO(12.0, "INCHES")
+        );
+        assertEquals(2.0, result.getValue(), 0.01);
+    }
+
+    @Test
+    void testDivision() {
+        double result = controller.performDivision(
+                new QuantityDTO(24.0, "INCHES"),
+                new QuantityDTO(12.0, "INCHES")
+        );
+        assertEquals(2.0, result, 0.001);
+    }
+
+    @Test
+    void testCrossCategoryShouldFail() {
+        assertThrows(RuntimeException.class, () ->
+                controller.performComparison(
+                        new QuantityDTO(1.0, "FEET"),
+                        new QuantityDTO(1.0, "GRAMS")
+                )
+        );
+    }
+
+    @Test
+    void testTemperatureAdditionShouldFail() {
+        assertThrows(RuntimeException.class, () ->
+                controller.performAddition(
+                        new QuantityDTO(10.0, "CELSIUS"),
+                        new QuantityDTO(20.0, "CELSIUS")
+                )
+        );
     }
 }
