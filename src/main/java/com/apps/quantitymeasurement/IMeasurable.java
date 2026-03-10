@@ -5,7 +5,7 @@ public interface IMeasurable {
     double convertToBaseUnit(double value);
 
     double convertFromBaseUnit(double baseValue);
-    
+
     @FunctionalInterface
     interface SupportsArithmetic {
         boolean isSupported();
@@ -16,8 +16,12 @@ public interface IMeasurable {
     default boolean supportsArithmetic() {
         return supportsArithmetic.isSupported();
     }
-    
+
     default void validateOperationSupport(String operation) {
         // Overridden in TemperatureUnit
+    }
+
+    default String getUnitName() {
+        return this.toString();
     }
 }
