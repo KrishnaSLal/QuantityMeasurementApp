@@ -294,6 +294,6 @@ Repository Layer
   
 🔗 *Code Link*
 
-[UC15: N-Tier Architecture Refractor]((https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC15-NTierArchitectureRefactor/src))
+[UC15: N-Tier Architecture Refractor](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC15-NTierArchitectureRefactor/src)
 
 ---
