@@ -292,3 +292,8 @@ Repository Layer
 - Repository layer stores operation history
 - Error handling is structured and centralized
   
+🔗 *Code Link*
+
+[UC15: N-Tier Architecture Refractor]((https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC15-NTierArchitectureRefactor/src))
+
+---
