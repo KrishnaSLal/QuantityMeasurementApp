@@ -4,6 +4,9 @@ import java.util.Objects;
 
 import com.app.quantitymeasurement.unit.IMeasurable;
 
+import lombok.Getter;
+
+@Getter
 public final class Quantity<U extends IMeasurable> {
 
     private final double value;
@@ -19,14 +22,6 @@ public final class Quantity<U extends IMeasurable> {
 
         this.value = value;
         this.unit = unit;
-    }
-
-    public double getValue() {
-        return value;
-    }
-
-    public U getUnit() {
-        return unit;
     }
 
     public enum ArithmeticOperation {
@@ -81,10 +76,8 @@ public final class Quantity<U extends IMeasurable> {
     }
 
     private double performBaseArithmetic(Quantity<U> other, ArithmeticOperation operation) {
-
         double baseThis = this.unit.convertToBaseUnit(this.value);
         double baseOther = other.unit.convertToBaseUnit(other.value);
-
         return operation.compute(baseThis, baseOther);
     }
 
@@ -97,13 +90,9 @@ public final class Quantity<U extends IMeasurable> {
     }
 
     public Quantity<U> add(Quantity<U> other, U targetUnit) {
-
-    	validateArithmeticOperands(other, targetUnit, true, ArithmeticOperation.ADD);
-
+        validateArithmeticOperands(other, targetUnit, true, ArithmeticOperation.ADD);
         double baseResult = performBaseArithmetic(other, ArithmeticOperation.ADD);
-
         double finalValue = targetUnit.convertFromBaseUnit(baseResult);
-
         return new Quantity<>(round(finalValue), targetUnit);
     }
 
@@ -112,25 +101,18 @@ public final class Quantity<U extends IMeasurable> {
     }
 
     public Quantity<U> subtract(Quantity<U> other, U targetUnit) {
-
-    	validateArithmeticOperands(other, targetUnit, true, ArithmeticOperation.SUBTRACT);
-
+        validateArithmeticOperands(other, targetUnit, true, ArithmeticOperation.SUBTRACT);
         double baseResult = performBaseArithmetic(other, ArithmeticOperation.SUBTRACT);
-
         double finalValue = targetUnit.convertFromBaseUnit(baseResult);
-
         return new Quantity<>(round(finalValue), targetUnit);
     }
 
     public double divide(Quantity<U> other) {
-
-    	validateArithmeticOperands(other, null, false, ArithmeticOperation.DIVIDE);
-
+        validateArithmeticOperands(other, null, false, ArithmeticOperation.DIVIDE);
         return performBaseArithmetic(other, ArithmeticOperation.DIVIDE);
     }
 
     public Quantity<U> convertTo(U targetUnit) {
-
         if (targetUnit == null)
             throw new IllegalArgumentException("Target unit cannot be null");
 
@@ -142,9 +124,7 @@ public final class Quantity<U extends IMeasurable> {
 
     @Override
     public boolean equals(Object obj) {
-
         if (this == obj) return true;
-
         if (!(obj instanceof Quantity<?> other)) return false;
 
         if (!this.unit.getClass().equals(other.unit.getClass()))
