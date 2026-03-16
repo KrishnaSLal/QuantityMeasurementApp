@@ -3,6 +3,7 @@
 .project
 .settings/
 bin/
+.factorypath
 
 # Maven target folder
 target/
