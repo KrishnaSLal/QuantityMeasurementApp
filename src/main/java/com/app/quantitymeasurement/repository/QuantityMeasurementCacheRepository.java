@@ -1,9 +1,10 @@
-package com.apps.quantitymeasurement.repository;
+package com.app.quantitymeasurement.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import com.apps.quantitymeasurement.entity.QuantityMeasurementEntity;
+import com.app.quantitymeasurement.entity.QuantityMeasurementEntity;
 
 public class QuantityMeasurementCacheRepository implements IQuantityMeasurementRepository {
 
@@ -11,10 +12,10 @@ public class QuantityMeasurementCacheRepository implements IQuantityMeasurementR
     private final List<QuantityMeasurementEntity> measurementCache;
 
     private QuantityMeasurementCacheRepository() {
-        measurementCache = new ArrayList<>();
+        this.measurementCache = new ArrayList<>();
     }
 
-    public static QuantityMeasurementCacheRepository getInstance() {
+    public static synchronized QuantityMeasurementCacheRepository getInstance() {
         if (instance == null) {
             instance = new QuantityMeasurementCacheRepository();
         }
@@ -22,12 +23,36 @@ public class QuantityMeasurementCacheRepository implements IQuantityMeasurementR
     }
 
     @Override
-    public void save(QuantityMeasurementEntity entity) {
+    public synchronized void save(QuantityMeasurementEntity entity) {
         measurementCache.add(entity);
     }
 
     @Override
-    public List<QuantityMeasurementEntity> findAll() {
+    public synchronized List<QuantityMeasurementEntity> findAll() {
         return new ArrayList<>(measurementCache);
+    }
+
+    @Override
+    public synchronized List<QuantityMeasurementEntity> findByOperationType(String operationType) {
+        return measurementCache.stream()
+                .filter(e -> operationType != null && operationType.equalsIgnoreCase(e.getOperationType()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public synchronized List<QuantityMeasurementEntity> findByMeasurementType(String measurementType) {
+        return measurementCache.stream()
+                .filter(e -> measurementType != null && measurementType.equalsIgnoreCase(e.getMeasurementType()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public synchronized int getTotalCount() {
+        return measurementCache.size();
+    }
+
+    @Override
+    public synchronized void deleteAll() {
+        measurementCache.clear();
     }
 }

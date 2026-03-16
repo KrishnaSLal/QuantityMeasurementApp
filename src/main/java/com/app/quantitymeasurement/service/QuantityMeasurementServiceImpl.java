@@ -1,17 +1,21 @@
-package com.apps.quantitymeasurement.service;
+package com.app.quantitymeasurement.service;
 
-import com.apps.quantitymeasurement.IMeasurable;
-import com.apps.quantitymeasurement.LengthUnit;
-import com.apps.quantitymeasurement.Quantity;
-import com.apps.quantitymeasurement.TemperatureUnit;
-import com.apps.quantitymeasurement.VolumeUnit;
-import com.apps.quantitymeasurement.WeightUnit;
-import com.apps.quantitymeasurement.dto.QuantityDTO;
-import com.apps.quantitymeasurement.entity.QuantityMeasurementEntity;
-import com.apps.quantitymeasurement.exception.QuantityMeasurementException;
-import com.apps.quantitymeasurement.repository.IQuantityMeasurementRepository;
+import com.app.quantitymeasurement.Quantity;
+import com.app.quantitymeasurement.dto.QuantityDTO;
+import com.app.quantitymeasurement.entity.QuantityMeasurementEntity;
+import com.app.quantitymeasurement.exception.QuantityMeasurementException;
+import com.app.quantitymeasurement.repository.IQuantityMeasurementRepository;
+import com.app.quantitymeasurement.unit.IMeasurable;
+import com.app.quantitymeasurement.unit.LengthUnit;
+import com.app.quantitymeasurement.unit.TemperatureUnit;
+import com.app.quantitymeasurement.unit.VolumeUnit;
+import com.app.quantitymeasurement.unit.WeightUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class QuantityMeasurementServiceImpl implements IQuantityMeasurementService {
+
+    private static final Logger log = LoggerFactory.getLogger(QuantityMeasurementServiceImpl.class);
 
     private final IQuantityMeasurementRepository repository;
 
@@ -22,30 +26,42 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
         this.repository = repository;
     }
 
+    private String normalizeUnitName(String unitName) {
+        String normalized = unitName.trim().toUpperCase();
+
+        return switch (normalized) {
+            case "GRAMS" -> "GRAM";
+            case "KILOGRAMS" -> "KILOGRAM";
+            case "POUNDS" -> "POUND";
+            case "LITRES", "LITERS" -> "LITRE";
+            case "MILLILITRES", "MILLILITERS" -> "MILLILITRE";
+            case "GALLONS" -> "GALLON";
+            default -> normalized;
+        };
+    }
+
     private IMeasurable parseUnit(String unitName) {
         if (unitName == null || unitName.isBlank()) {
             throw new QuantityMeasurementException("Unit cannot be null or blank");
         }
 
-        try {
-            return LengthUnit.valueOf(unitName.toUpperCase());
-        } catch (IllegalArgumentException ignored) {
-        }
+        String normalized = normalizeUnitName(unitName);
 
         try {
-            return WeightUnit.valueOf(unitName.toUpperCase());
-        } catch (IllegalArgumentException ignored) {
-        }
+            return LengthUnit.valueOf(normalized);
+        } catch (IllegalArgumentException ignored) { }
 
         try {
-            return VolumeUnit.valueOf(unitName.toUpperCase());
-        } catch (IllegalArgumentException ignored) {
-        }
+            return WeightUnit.valueOf(normalized);
+        } catch (IllegalArgumentException ignored) { }
 
         try {
-            return TemperatureUnit.valueOf(unitName.toUpperCase());
-        } catch (IllegalArgumentException ignored) {
-        }
+            return VolumeUnit.valueOf(normalized);
+        } catch (IllegalArgumentException ignored) { }
+
+        try {
+            return TemperatureUnit.valueOf(normalized);
+        } catch (IllegalArgumentException ignored) { }
 
         throw new QuantityMeasurementException("Invalid unit: " + unitName);
     }
@@ -70,6 +86,38 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
         return new QuantityDTO(quantity.getValue(), quantity.getUnit().toString());
     }
 
+    private String resolveMeasurementType(IMeasurable measurable) {
+        if (measurable instanceof LengthUnit) return "LENGTH";
+        if (measurable instanceof WeightUnit) return "WEIGHT";
+        if (measurable instanceof VolumeUnit) return "VOLUME";
+        if (measurable instanceof TemperatureUnit) return "TEMPERATURE";
+        return "UNKNOWN";
+    }
+
+    private void persistSuccess(String operation, String measurementType, String operand1, String operand2, String result) {
+        repository.save(new QuantityMeasurementEntity(
+                operation,
+                measurementType,
+                operand1,
+                operand2,
+                result,
+                false,
+                null
+        ));
+    }
+
+    private void persistError(String operation, String measurementType, String operand1, String operand2, String errorMessage) {
+        repository.save(new QuantityMeasurementEntity(
+                operation,
+                measurementType,
+                operand1,
+                operand2,
+                null,
+                true,
+                errorMessage
+        ));
+    }
+
     @Override
     public boolean compare(QuantityDTO quantity1, QuantityDTO quantity2) {
         try {
@@ -79,24 +127,14 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
             validateSameCategory(q1.getUnit(), q2.getUnit());
 
             boolean result = q1.equals(q2);
+            persistSuccess("COMPARE", resolveMeasurementType(q1.getUnit()),
+                    quantity1.toString(), quantity2.toString(), String.valueOf(result));
 
-            repository.save(new QuantityMeasurementEntity(
-                    "COMPARE",
-                    quantity1.toString(),
-                    quantity2.toString(),
-                    String.valueOf(result)
-            ));
-
+            log.info("Comparison performed successfully");
             return result;
 
         } catch (Exception e) {
-            repository.save(new QuantityMeasurementEntity(
-                    "COMPARE",
-                    String.valueOf(quantity1),
-                    String.valueOf(quantity2),
-                    e.getMessage(),
-                    true
-            ));
+            persistError("COMPARE", "UNKNOWN", String.valueOf(quantity1), String.valueOf(quantity2), e.getMessage());
             throw new QuantityMeasurementException("Comparison failed: " + e.getMessage(), e);
         }
     }
@@ -124,23 +162,14 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
             }
 
             QuantityDTO result = toDTO(converted);
+            persistSuccess("CONVERT", resolveMeasurementType(source.getUnit()),
+                    sourceQuantity.toString(), targetUnit, result.toString());
 
-            repository.save(new QuantityMeasurementEntity(
-                    "CONVERT",
-                    sourceQuantity.toString(),
-                    result.toString()
-            ));
-
+            log.info("Conversion performed successfully");
             return result;
 
         } catch (Exception e) {
-            repository.save(new QuantityMeasurementEntity(
-                    "CONVERT",
-                    String.valueOf(sourceQuantity),
-                    targetUnit,
-                    e.getMessage(),
-                    true
-            ));
+            persistError("CONVERT", "UNKNOWN", String.valueOf(sourceQuantity), targetUnit, e.getMessage());
             throw new QuantityMeasurementException("Conversion failed: " + e.getMessage(), e);
         }
     }
@@ -168,24 +197,14 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
             }
 
             QuantityDTO resultDTO = toDTO(result);
+            persistSuccess("ADD", resolveMeasurementType(q1.getUnit()),
+                    quantity1.toString(), quantity2.toString(), resultDTO.toString());
 
-            repository.save(new QuantityMeasurementEntity(
-                    "ADD",
-                    quantity1.toString(),
-                    quantity2.toString(),
-                    resultDTO.toString()
-            ));
-
+            log.info("Addition performed successfully");
             return resultDTO;
 
         } catch (Exception e) {
-            repository.save(new QuantityMeasurementEntity(
-                    "ADD",
-                    String.valueOf(quantity1),
-                    String.valueOf(quantity2),
-                    e.getMessage(),
-                    true
-            ));
+            persistError("ADD", "UNKNOWN", String.valueOf(quantity1), String.valueOf(quantity2), e.getMessage());
             throw new QuantityMeasurementException("Addition failed: " + e.getMessage(), e);
         }
     }
@@ -213,24 +232,14 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
             }
 
             QuantityDTO resultDTO = toDTO(result);
+            persistSuccess("SUBTRACT", resolveMeasurementType(q1.getUnit()),
+                    quantity1.toString(), quantity2.toString(), resultDTO.toString());
 
-            repository.save(new QuantityMeasurementEntity(
-                    "SUBTRACT",
-                    quantity1.toString(),
-                    quantity2.toString(),
-                    resultDTO.toString()
-            ));
-
+            log.info("Subtraction performed successfully");
             return resultDTO;
 
         } catch (Exception e) {
-            repository.save(new QuantityMeasurementEntity(
-                    "SUBTRACT",
-                    String.valueOf(quantity1),
-                    String.valueOf(quantity2),
-                    e.getMessage(),
-                    true
-            ));
+            persistError("SUBTRACT", "UNKNOWN", String.valueOf(quantity1), String.valueOf(quantity2), e.getMessage());
             throw new QuantityMeasurementException("Subtraction failed: " + e.getMessage(), e);
         }
     }
@@ -257,26 +266,15 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
                 throw new QuantityMeasurementException("Unsupported measurement type for division");
             }
 
-            repository.save(new QuantityMeasurementEntity(
-                    "DIVIDE",
-                    quantity1.toString(),
-                    quantity2.toString(),
-                    String.valueOf(result)
-            ));
+            persistSuccess("DIVIDE", resolveMeasurementType(q1.getUnit()),
+                    quantity1.toString(), quantity2.toString(), String.valueOf(result));
 
+            log.info("Division performed successfully");
             return result;
 
         } catch (Exception e) {
-            repository.save(new QuantityMeasurementEntity(
-                    "DIVIDE",
-                    String.valueOf(quantity1),
-                    String.valueOf(quantity2),
-                    e.getMessage(),
-                    true
-            ));
+            persistError("DIVIDE", "UNKNOWN", String.valueOf(quantity1), String.valueOf(quantity2), e.getMessage());
             throw new QuantityMeasurementException("Division failed: " + e.getMessage(), e);
         }
     }
-    
-    
 }

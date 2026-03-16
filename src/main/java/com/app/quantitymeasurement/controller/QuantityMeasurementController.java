@@ -1,9 +1,13 @@
-package com.apps.quantitymeasurement.controller;
+package com.app.quantitymeasurement.controller;
 
-import com.apps.quantitymeasurement.dto.QuantityDTO;
-import com.apps.quantitymeasurement.service.IQuantityMeasurementService;
+import com.app.quantitymeasurement.dto.QuantityDTO;
+import com.app.quantitymeasurement.service.IQuantityMeasurementService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class QuantityMeasurementController {
+
+    private static final Logger log = LoggerFactory.getLogger(QuantityMeasurementController.class);
 
     private final IQuantityMeasurementService quantityMeasurementService;
 
@@ -12,6 +16,7 @@ public class QuantityMeasurementController {
             throw new IllegalArgumentException("Service cannot be null");
         }
         this.quantityMeasurementService = quantityMeasurementService;
+        log.info("QuantityMeasurementController initialized");
     }
 
     public boolean performComparison(QuantityDTO quantity1, QuantityDTO quantity2) {
