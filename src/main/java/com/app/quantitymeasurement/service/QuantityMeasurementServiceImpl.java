@@ -80,13 +80,17 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
 
         validateSameMeasurementType(q1, q2);
 
+        if ("TemperatureUnit".equalsIgnoreCase(q1.getMeasurementType())) {
+            throw new QuantityMeasurementException("DIVIDE not supported for TemperatureUnit");
+        }
+
         IMeasurable unit1 = QuantityFactory.getUnit(q1.getMeasurementType(), q1.getUnit());
         IMeasurable unit2 = QuantityFactory.getUnit(q2.getMeasurementType(), q2.getUnit());
 
         double base1 = unit1.toBase(q1.getValue());
         double base2 = unit2.toBase(q2.getValue());
 
-        if (base2 == 0) {
+        if (base2 == 0.0) {
             throw new QuantityMeasurementException("Divide by zero");
         }
 
@@ -94,6 +98,9 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
 
         QuantityMeasurementEntity entity = buildBaseEntity(q1, q2, "DIVIDE");
         entity.setResultValue(result);
+        entity.setResultUnit("RATIO");
+        entity.setResultMeasurementType("NUMBER");
+        entity.setError(false);
 
         return saveAndReturn(entity);
     }
