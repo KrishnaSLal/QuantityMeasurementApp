@@ -8,19 +8,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(QuantityMeasurementController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class QuantityMeasurementControllerTest {
 
     @Autowired
@@ -51,7 +53,7 @@ class QuantityMeasurementControllerTest {
                 .error(false)
                 .build();
 
-        when(service.compare(input)).thenReturn(response);
+        when(service.compare(any(QuantityInputDTO.class))).thenReturn(response);
 
         mockMvc.perform(post("/api/v1/quantities/compare")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -70,6 +72,12 @@ class QuantityMeasurementControllerTest {
         );
 
         QuantityMeasurementDTO response = QuantityMeasurementDTO.builder()
+                .thisValue(1.0)
+                .thisUnit("FEET")
+                .thisMeasurementType("LengthUnit")
+                .thatValue(12.0)
+                .thatUnit("INCHES")
+                .thatMeasurementType("LengthUnit")
                 .operation("ADD")
                 .resultValue(2.0)
                 .resultUnit("FEET")
@@ -77,7 +85,7 @@ class QuantityMeasurementControllerTest {
                 .error(false)
                 .build();
 
-        when(service.add(input)).thenReturn(response);
+        when(service.add(any(QuantityInputDTO.class))).thenReturn(response);
 
         mockMvc.perform(post("/api/v1/quantities/add")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -85,7 +93,8 @@ class QuantityMeasurementControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.operation").value("ADD"))
                 .andExpect(jsonPath("$.resultValue").value(2.0))
-                .andExpect(jsonPath("$.resultUnit").value("FEET"));
+                .andExpect(jsonPath("$.resultUnit").value("FEET"))
+                .andExpect(jsonPath("$.error").value(false));
     }
 
     @Test
@@ -100,7 +109,8 @@ class QuantityMeasurementControllerTest {
 
         mockMvc.perform(get("/api/v1/quantities/history/operation/COMPARE"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].operation").value("COMPARE"));
+                .andExpect(jsonPath("$[0].operation").value("COMPARE"))
+                .andExpect(jsonPath("$[0].resultString").value("true"));
     }
 
     @Test
@@ -115,7 +125,8 @@ class QuantityMeasurementControllerTest {
 
         mockMvc.perform(get("/api/v1/quantities/history/type/LengthUnit"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].thisMeasurementType").value("LengthUnit"));
+                .andExpect(jsonPath("$[0].thisMeasurementType").value("LengthUnit"))
+                .andExpect(jsonPath("$[0].operation").value("ADD"));
     }
 
     @Test
