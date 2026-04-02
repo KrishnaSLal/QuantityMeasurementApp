@@ -2,9 +2,10 @@
 .classpath
 .project
 .settings/
+.factorypath
+bin/
 
 # Maven target folder
 target/
-
 # OS files
 .DS_Store
