@@ -506,3 +506,31 @@ Transformed the application into a Spring Boot-based REST backend.
 ---
 
   
+## 🔹 UC18 – Authentication and User Management
+
+Enhanced backend security using Spring Security with JWT and OAuth2 (Google).
+
+### Added:
+- User entity and repository
+- JWT-based authentication mechanism
+- OAuth2 Google login integration
+
+### Supported:
+- Secure API access with tokens
+- Role-based authorization
+- User registration and login flows
+
+### Ensured:
+- Stateless authentication using JWT
+- Protected endpoints via Spring Security
+- Scalable and secure user management
+
+📌 Focus: Securing the application with modern authentication and authorization mechanisms.
+
+---
+
+🔗 *Code Link*
+
+[UC18: Authentication](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC18-GoogleAuthenticationUserManagement/quantitymeasurement/src)
+
+---
