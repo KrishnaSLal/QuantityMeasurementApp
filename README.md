@@ -1,8 +1,6 @@
 # 📏 Quantity Measurement App
 
 ---
-# 📏 Quantity Measurement App
----
 
 # ✅ UC17 – Spring Backend for Quantity Measurement
 
