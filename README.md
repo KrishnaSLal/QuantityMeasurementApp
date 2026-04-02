@@ -527,6 +527,7 @@ Enhanced backend security using Spring Security with JWT and OAuth2 (Google).
 
 📌 Focus: Securing the application with modern authentication and authorization mechanisms.
 
+
 ---
 
 🔗 *Code Link*
