@@ -445,3 +445,64 @@ This design prepares the system for future extensions such as **REST APIs, datab
 [UC15: N-Tier Architecture Refractor](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC15-NTierArchitectureRefactor/src)
 
 ---
+
+## 🔹 UC16 – Database Integration with JDBC
+
+Introduced persistent storage using JDBC for quantity measurement operations.
+
+### Added:
+- `QuantityMeasurementDatabaseRepository`
+- Connection pooling utility
+- Parameterized SQL-based CRUD operations
+
+### Supported:
+- Database persistence of measurement records
+- Retrieval of historical data
+- Transaction management for consistency
+
+### Ensured:
+- Secure queries using `PreparedStatement`
+- Proper resource management (try-with-resources)
+- Separation of concerns via repository abstraction
+
+📌 Focus: Transition from in-memory storage to scalable database persistence.
+
+---
+
+🔗 *Code Link*
+
+[UC16: JDBC Presistence](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC16-JDBCPersistence/src)
+
+---
+
+  
+## 🔹 UC17 – Spring Backend for Quantity Measurement
+
+Transformed the application into a Spring Boot-based REST backend.
+
+### Added:
+- Spring Boot application setup
+- REST controllers for quantity operations
+- Spring Data JPA repository layer
+
+### Supported:
+- API-based interaction using JSON
+- Dependency Injection across layers
+- Automatic ORM-based persistence
+
+### Ensured:
+- Loose coupling via Spring IoC container
+- Centralized exception handling
+- Validation and logging support
+
+📌 Focus: Migration from standalone application to scalable RESTful backend.
+
+---
+
+🔗 *Code Link*
+
+[UC17: SpringBackend](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC17-SpringBackend/src)
+
+---
+
+  
