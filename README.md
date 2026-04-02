@@ -1,407 +1,151 @@
 # 📏 Quantity Measurement App
 
-## 📌 Project Overview
+---
+# 📏 Quantity Measurement App
+---
 
-The **Quantity Measurement App** is a Java-based application developed using **Test-Driven Development (TDD)** principles.  
-It focuses on validating and comparing different physical quantities such as length, weight, and volume.
-
-Each feature is implemented in a separate Git branch following a **1 Use Case = 1 Branch** strategy to maintain clean version control and structured development.
+# ✅ UC17 – Spring Backend for Quantity Measurement
 
 ---
 
-## 🛠 Tech Stack
+## 📖 Description
 
-- Java 8+
-- Maven
-- JUnit 5
-- Object-Oriented Programming (OOP)
-- Test-Driven Development (TDD)
+UC17 transforms the **Quantity Measurement Application** into a **Spring Boot-based backend system** by leveraging the powerful Spring ecosystem.
 
----
+This use case modernizes the application by:
 
-## 🌿 Branching Strategy
+- Converting it into a **RESTful web service**
+- Replacing manual wiring with **Spring Dependency Injection**
+- Replacing JDBC boilerplate with **Spring Data JPA**
+- Introducing **Spring MVC architecture**
 
-This project follows a **feature-branch workflow**.
+The application now supports:
 
-- Total Use Cases: **14**
-- Total Branches: **14**
-- Each branch implements exactly **one use case**
-
-This ensures:
-- Clean commit history
-- Isolated feature development
-- Easy debugging
-- Professional Git workflow
+- REST APIs for all quantity operations  
+- Automatic configuration using Spring Boot  
+- Clean layered architecture using Spring conventions  
 
 ---
 
-📂 Project Structure
---
+# 🔹 Preconditions
 
-```text
-QuantityMeasurementApp
-│
-├── src
-│   ├── main
-│   │   └── java
-│   │       └── com.apps.quantitymeasurement
-│   │
-│   └── test
-│       └── java
-│           └── com.apps.quantitymeasurement
-│
-├── pom.xml
-└── README.md
-```
+- All functionality from **UC1–UC16** is fully operational  
+- N-Tier architecture is implemented  
+- JDBC-based persistence is working  
+- Maven project structure is available  
+- Entities, DTOs, Repository, and Service layers exist  
 
 ---
 
-
-# 📚 Use Cases
-
----
-
-## 🔹 UC1 – Feet Measurement Equality
-
-- Implemented `Length` class with `FEET`.
-- Implemented value-based equality.
-- Covered:
-  - Reflexive
-  - Symmetric
-  - Transitive
-  - Null safety
-  - Floating-point comparison using `Double.compare()`
-
-📌 Focus: Object equality fundamentals.
+# 🔹 Main Flow
 
 ---
 
-
-🔗*Code Link*
-
-[UC1: FeetEquality](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC1-FeetEquality)
-
----
-
-## 🔹 UC2 – Feet and Inches Equality
-
-- Introduced separate `Inches` class.
-- Compared feet-to-feet and inch-to-inch.
-- Identified **code duplication problem (DRY violation)**.
-
-📌 Focus: Equality extension & design limitations.
-
----
-
-🔗*Code Link*
-
-[UC2: InchEquality](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC2-InchEquality/src)
-
----
-
-
-## 🔹 UC3 – Cross Unit Length Equality
-
-- Compared `1 ft == 12 inches`.
-- Introduced **unit conversion logic**.
-- Established base unit normalization.
-
-📌 Focus: Conversion before comparison.
-
----
-
-🔗*Code Link*
-
-[UC3: GenericQuantity](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC3-GenericQuantityClassForDRYPrinciple/src)
-
----
-
-## 🔹 UC4 – Multi-Unit Length Support
-
-- Added:
-  - Yards
-  - Centimeters
-- Centralized conversion through base unit.
-- Improved test coverage.
-
-📌 Focus: Extensibility within one category.
-
----
-
-🔗*Code Link*
-
-[UC4: Extended Unit Support](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC4-ExtendedUnitSupport/src)
-
----
-
-## 🔹 UC5 – Length Addition
-
-- Implemented `add()` method.
-- Supported:
-  - Same-unit addition
-  - Cross-unit addition
-- Returned immutable result.
-
-📌 Focus: Arithmetic operations + immutability.
-
----
-
-🔗*Code Link*
-
-[UC5: Unit-to-Unit Conversion](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC5-Unit-to-UnitConversion/src)
-
----
-
-
-## 🔹 UC6 – Refactoring to Quantity Class
-
-- Replaced multiple length classes with:
-  ```
-  Quantity + LengthUnit enum
-  ```
-- Removed duplication.
-- Introduced enum-based conversion factors.
-
-📌 Focus: Clean design & DRY principle.
-
----
-
-
-🔗*Code Link*
-
-[UC6: Addition of Two Length Units](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC6-Addition-Of-Two-Length-Units/src)
-
----
-
-## 🔹 UC7 – Enhanced Quantity Design
-
-- Strengthened validation.
-- Improved equals/hashCode contract.
-- Ensured immutability strictly enforced.
-
-📌 Focus: Robust domain modeling.
-
----
-
-🔗*Code Link*
-
-[UC7: Addition with Target Unit Specification](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC7-Addition-With-Target-Unit-Specification/src)
-
----
-
-
-## 🔹 UC8 – Weight Measurement Support
-
-- Added new category:
-  - Kilogram (base)
-  - Gram
-  - Pound
-- Created separate `QuantityWeight` class.
-- Realized duplication across categories.
-
-📌 Focus: Multi-category support & architectural limitations.
-
----
-
-🔗*Code Link*
-
-[UC8: Refactoring Unit Enum to Standalone](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC2-InchEquality/src)
-
----
-
-
-## 🔹 UC9 – Category-Specific Quantity Classes
-
-- Separate:
-  - `QuantityLength`
-  - `QuantityWeight`
-- Architecture worked but:
-  - Violated DRY
-  - Increased maintenance burden
-  - Not scalable
-
-📌 Focus: Identifying scalability problem.
-
----
-
-🔗*Code Link*
-
-[UC9: Weight Measurement](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC9-Weight-Measurement/src)
-
----
-
-## 🔹 UC10 – Generic Architecture Refactor
-
-🎯 Major Architectural Upgrade
-
-Introduced:
+### Step 1 – Create Spring Boot Application
+
+```java
+@SpringBootApplication
+public class QuantityMeasurementApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(QuantityMeasurementApplication.class, args);
+    }
+}
 
 ```
-Quantity<U extends IMeasurable>
+---
+
+### Step 2 – Convert Controller to REST Controller
+
+```java
+@RestController
+@RequestMapping("/api/quantity")
+public class QuantityMeasurementController {
+
+    @Autowired
+    private IQuantityMeasurementService service;
+
+    @PostMapping("/add")
+    public double add(@RequestBody QuantityDTO dto1,
+                      @RequestBody QuantityDTO dto2) {
+        return service.add(dto1, dto2);
+    }
+}
 ```
 
-### Added:
-- `IMeasurable` interface
-- Generic bounded types
-- Single reusable Quantity class
+### Step 3 - Implement Service Layer with Spring
 
-### Benefits:
-- Eliminated duplication
-- Restored SRP
-- Enforced type safety
-- Enabled true scalability
-- No category-specific Quantity classes needed
+- Dependency injection used
+- Business logic is managed by Spring
 
-📌 Focus: Generics + Interface-driven polymorphism.
+### Step 4 - Create JPA Repository
 
----
+- Eliminates boilerplate code
+- Provides CRUD operations automatically
 
-🔗*Code Link*
+### Step 5 - Convert Entity to JPA Entity
 
-[UC10: GenericQuantityClass with Unit Interface](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC10-Generic-Quantity-Class-with-Unit-Interface-For-Multi-Category-Support/src)
+- Maps java objects to database table
+- Uses ORM(Object Relational Mapping)
 
----
+### Step 6 - Configure application.properties
 
-## 🔹 UC11 – Volume Measurement Support
+- Enables database configuration
+- Auto schema generation
 
-Added third category:
+### Step 7 - Add Dependency Injection
 
-- Litre (base)
-- Millilitre
-- Gallon
+- Provides loose coupling & better testability
 
-Implemented only:
+### Step 8 - Add Global Exception Handling
 
-```
-VolumeUnit implements IMeasurable
-```
+- Centralized error handling
+- Clean API response
 
-No modification required in:
-- `Quantity<U>`
-- `QuantityMeasurementApp`
-- Existing test infrastructure
+### Step 9 - Add Validation
 
-📌 Focus: Proving scalability of UC10 design.
+### Step 10 - Expose REST APIs
+
+### Step 11 - Logging with SLF4J
+
+### Step 12 - Testing with Spring Boot
 
 ---
 
-🔗*Code Link*
+# 🔹Postconditions
 
-[UC11: VolumeMeasurement](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC11-Volume-Measurement/src)
+- Application is converted into a Spring Boot backend
+- REST APIs are available for all operations
+- Dependency Injection replaces manual object creation
+- JPA replaces JDBC boilerplate
+- Global exception handling implemented
+- Validation ensures correct inputs
+- Logging improves observability
+- Embedded server runs application
+- Application is ready for frontend integration
+
 
 ---
 
+# 🎯 Key Design Improvements
 
----
-
-## 🔹 UC12 – Advanced Arithmetic Operations
-
-Expanded arithmetic capabilities across all measurable categories.
-
-### Added:
-- `subtract()`
-- `divide()`
-- Overloaded arithmetic methods with target unit support
-
-### Supported:
-- Cross-unit arithmetic
-- Base-unit normalization before operation
-- Immutable result objects
-
-### Ensured:
-- Subtraction remains **non-commutative**
-- Division returns **dimensionless double**
-- Cross-category arithmetic prohibited
-
-📌 Focus: Complete arithmetic support with strict validation.
+- Spring Boot Integration
+- REST API Architecture
+- Dependency Injection
+- Spring MVC Pattern
+- Spring Data JPA
+- Global Exception Handling
+- Validation with Annotations
+- Embedded Server (Tomcat)
+- Logging with SLF4J
+- Scalable Backend Design
 
 ---
 
 🔗 *Code Link*
 
-[UC12: Subtraction and Division Operations](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC12-QuantitySubtractionAndDivision/src)
+[UC17: SpringBackend](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC17-SpringBackend/src)
 
 ---
 
-## 🔹 UC13 – Centralized Arithmetic Refactor
-
-🎯 Major Internal Refactor (No Public API Change)
-
-Refactored arithmetic logic to remove duplication and improve maintainability.
-
-### Introduced:
-```
-ArithmeticOperation enum
-DoubleBinaryOperator (Lambda-based dispatch)
-Centralized validation helper
-Core base-unit arithmetic method
-```
-
-### Achieved:
-- DRY principle fully enforced
-- Centralized validation logic
-- Clean separation of concerns
-- No behavioral changes from UC12
-- All existing test cases passed without modification
-
-📌 Focus: Clean architecture + lambda-driven arithmetic dispatch.
-
----
-
-🔗 *Code Link*
-
-[UC13: Centralized Arithemaatic Logic](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC13-Centralized-Arithmetic-Logic/src)
-
----
-
-
-## 🔹 UC14 – Temperature Measurement Support
-
-Extended system to support **Temperature category** with controlled arithmetic capability.
-
-### Added:
-- `TemperatureUnit` enum
-  - Celsius (base)
-  - Fahrenheit
-  - Kelvin
-
-### Special Behavior:
-- Supports equality
-- Supports unit conversion
-- Does NOT support arithmetic operations
-
-### Architectural Enhancement:
-- Refactored `IMeasurable` to support optional arithmetic
-- Introduced capability-based validation
-- Used default methods + functional interface
-- Preserved backward compatibility
-
-📌 Focus: Extending system while respecting domain constraints.
-
----
-
-🔗 *Code Link*
-
-[UC14: Temperature Measurement](https://github.com/KrishnaSLal/QuantityMeasurementApp/tree/feature/UC14-TemperatureMeasurement/src)
-
----
-
-# 🚀 Final Architecture Status
-
-After UC14, the system now supports:
-
-- ✅ Length
-- ✅ Weight
-- ✅ Volume
-- ✅ Temperature (conversion + equality only)
-
-### Design Highlights:
-- Generic architecture (`Quantity<U extends IMeasurable>`)
-- Strict cross-category type safety
-- Immutable domain model
-- Centralized arithmetic engine
-- Lambda-based operation dispatch
-- Fully scalable measurement system
-- All use cases covered through TDD
-
----
+  
