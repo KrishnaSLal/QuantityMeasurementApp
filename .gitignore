@@ -2,6 +2,9 @@
 .classpath
 .project
 .settings/
+.factorypath
+bin/
+
 
 # Maven target folder
 target/
