@@ -1,8 +1,8 @@
 package com.app.quantitymeasurement.service;
 
-import org.springframework.stereotype.Service;
 import com.app.quantitymeasurement.entity.AppUser;
 import com.app.quantitymeasurement.repository.AppUserRepository;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AppUserService {
@@ -15,6 +15,12 @@ public class AppUserService {
 
     public AppUser saveOrGetUser(String name, String email) {
         return repository.findByEmail(email)
-                .orElseGet(() -> repository.save(new AppUser(name, email, "USER")));
+                .orElseGet(() -> {
+                    AppUser user = new AppUser();
+                    user.setName(name);
+                    user.setEmail(email);
+                    user.setRole("USER");
+                    return repository.save(user);
+                });
     }
 }

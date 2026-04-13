@@ -58,5 +58,8 @@ public class QuantityMeasurementController {
         return "This is secured API 🔐";
     }
     
-    
+    @PostMapping("/convert")
+    public QuantityMeasurementDTO convert(@Valid @RequestBody QuantityInputDTO inputDTO) {
+        return service.convert(inputDTO);
+    }
 }

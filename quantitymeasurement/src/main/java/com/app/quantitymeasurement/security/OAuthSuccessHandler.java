@@ -1,6 +1,5 @@
 package com.app.quantitymeasurement.security;
 
-import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;

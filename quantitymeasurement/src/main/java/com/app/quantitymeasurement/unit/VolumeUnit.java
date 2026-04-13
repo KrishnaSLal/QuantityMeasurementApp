@@ -1,9 +1,10 @@
 package com.app.quantitymeasurement.unit;
 
 public enum VolumeUnit implements IMeasurable {
-	
+
     MILLILITRE(1.0),
-    LITRE(1000.0);
+    LITRE(1000.0),
+    GALLON(3785.41);
 
     private final double factor;
 
@@ -13,7 +14,7 @@ public enum VolumeUnit implements IMeasurable {
 
     @Override
     public double toBase(double value) {
-        return value * factor;
+        return value * factor;   // base = millilitre
     }
 
     @Override

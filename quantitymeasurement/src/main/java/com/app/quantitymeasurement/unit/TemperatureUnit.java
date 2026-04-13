@@ -1,17 +1,26 @@
 package com.app.quantitymeasurement.unit;
 
 public enum TemperatureUnit implements IMeasurable {
-	
+
     CELSIUS,
-    FAHRENHEIT;
+    FAHRENHEIT,
+    KELVIN;
 
     @Override
     public double toBase(double value) {
-        return this == CELSIUS ? value : (value - 32) * 5 / 9;
+        return switch (this) {
+            case CELSIUS -> value;
+            case FAHRENHEIT -> (value - 32) * 5 / 9;
+            case KELVIN -> value - 273.15;
+        };
     }
 
     @Override
     public double fromBase(double value) {
-        return this == CELSIUS ? value : (value * 9 / 5) + 32;
+        return switch (this) {
+            case CELSIUS -> value;
+            case FAHRENHEIT -> (value * 9 / 5) + 32;
+            case KELVIN -> value + 273.15;
+        };
     }
 }

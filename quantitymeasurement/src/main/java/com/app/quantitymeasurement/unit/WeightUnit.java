@@ -1,9 +1,10 @@
 package com.app.quantitymeasurement.unit;
 
 public enum WeightUnit implements IMeasurable {
-	
+
     GRAM(1.0),
-    KILOGRAM(1000.0);
+    KILOGRAM(1000.0),
+    POUND(453.592);   // 1 pound = 453.592 grams
 
     private final double factor;
 
@@ -13,12 +14,11 @@ public enum WeightUnit implements IMeasurable {
 
     @Override
     public double toBase(double value) {
-        return value * factor;
+        return value * factor;   // base = gram
     }
 
     @Override
     public double fromBase(double value) {
         return value / factor;
-        
     }
 }

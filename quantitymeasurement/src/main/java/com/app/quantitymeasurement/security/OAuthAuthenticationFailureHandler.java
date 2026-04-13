@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import com.app.quantitymeasurement.service.AppUserService;
 
 @Service
-public class CustomOidcUserService extends OidcUserService {
+public class OAuthAuthenticationFailureHandler extends OidcUserService {
 
     private final AppUserService userService;
 
-    public CustomOidcUserService(AppUserService userService) {
+    public OAuthAuthenticationFailureHandler(AppUserService userService) {
         this.userService = userService;
     }
 

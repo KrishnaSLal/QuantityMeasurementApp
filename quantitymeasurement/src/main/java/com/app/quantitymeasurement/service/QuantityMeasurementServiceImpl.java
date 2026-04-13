@@ -3,13 +3,14 @@ package com.app.quantitymeasurement.service;
 import com.app.quantitymeasurement.dto.QuantityDTO;
 import com.app.quantitymeasurement.dto.QuantityInputDTO;
 import com.app.quantitymeasurement.dto.QuantityMeasurementDTO;
+import com.app.quantitymeasurement.entity.QuantityMeasurementEntity;
 import com.app.quantitymeasurement.exception.QuantityMeasurementException;
-import com.app.quantitymeasurement.model.QuantityMeasurementEntity;
 import com.app.quantitymeasurement.repository.QuantityMeasurementRepository;
 import com.app.quantitymeasurement.unit.IMeasurable;
 import com.app.quantitymeasurement.util.QuantityFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -100,7 +101,6 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
         entity.setResultValue(result);
         entity.setResultUnit("RATIO");
         entity.setResultMeasurementType("NUMBER");
-        entity.setError(false);
 
         return saveAndReturn(entity);
     }
@@ -113,8 +113,8 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
 
         if ("TemperatureUnit".equalsIgnoreCase(q1.getMeasurementType())) {
             throw new QuantityMeasurementException(operation + " not supported for TemperatureUnit");
-        }
-
+        } 
+        
         IMeasurable unit1 = QuantityFactory.getUnit(q1.getMeasurementType(), q1.getUnit());
         IMeasurable unit2 = QuantityFactory.getUnit(q2.getMeasurementType(), q2.getUnit());
 
@@ -176,19 +176,21 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
     }
 
     private QuantityMeasurementEntity buildBaseEntity(QuantityDTO q1, QuantityDTO q2, String operation) {
-        return QuantityMeasurementEntity.builder()
-                .thisValue(q1.getValue())
-                .thisUnit(q1.getUnit())
-                .thisMeasurementType(q1.getMeasurementType())
-                .thatValue(q2.getValue())
-                .thatUnit(q2.getUnit())
-                .thatMeasurementType(q2.getMeasurementType())
-                .operation(operation)
-                .error(false)
-                .build();
+        QuantityMeasurementEntity entity = new QuantityMeasurementEntity();
+        entity.setThisValue(q1.getValue());
+        entity.setThisUnit(q1.getUnit());
+        entity.setThisMeasurementType(q1.getMeasurementType());
+        entity.setThatValue(q2.getValue());
+        entity.setThatUnit(q2.getUnit());
+        entity.setThatMeasurementType(q2.getMeasurementType());
+        entity.setOperation(operation);
+        entity.setError(false);
+        entity.setCreatedAt(LocalDateTime.now());
+        return entity;
     }
 
     private QuantityMeasurementDTO saveAndReturn(QuantityMeasurementEntity entity) {
-        return QuantityMeasurementDTO.fromEntity(repository.save(entity));
+        QuantityMeasurementEntity saved = repository.save(entity);
+        return QuantityMeasurementDTO.fromEntity(saved);
     }
 }

@@ -1,4 +1,4 @@
-package com.app.quantitymeasurement.model;
+package com.app.quantitymeasurement.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,21 +11,31 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class QuantityMeasurementEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Double thisValue;
+
+    @Column(nullable = false)
     private String thisUnit;
+
+    @Column(nullable = false)
     private String thisMeasurementType;
 
+    @Column(nullable = false)
     private Double thatValue;
+
+    @Column(nullable = false)
     private String thatUnit;
+
+    @Column(nullable = false)
     private String thatMeasurementType;
 
+    @Column(nullable = false)
     private String operation;
 
     private String resultString;
@@ -33,13 +43,17 @@ public class QuantityMeasurementEntity {
     private String resultUnit;
     private String resultMeasurementType;
 
-    private String errorMessage;
+    @Column(nullable = false)
     private boolean error;
 
-    private LocalDateTime createdAt;
+    private String errorMessage;
 
-    @PrePersist
-    public void prePersist() {
-        createdAt = LocalDateTime.now();
-    }
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+    
+    
+    //the entity becomes linked to the user who performed the calculation
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private AppUser user;
 }
