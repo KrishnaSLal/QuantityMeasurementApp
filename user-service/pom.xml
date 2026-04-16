@@ -77,7 +77,6 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- ================= JWT (FIXED) ================= -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -97,6 +96,14 @@
             <version>0.12.7</version>
             <scope>runtime</scope>
         </dependency>
+        
+       <dependency>
+           <groupId>org.springdoc</groupId>
+           <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+           <version>2.5.0</version>
+       </dependency>
+     
+
 
         <!-- Test -->
         <dependency>
