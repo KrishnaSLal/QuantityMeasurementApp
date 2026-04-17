@@ -1,0 +1,5 @@
+package com.app.quantitymeasurement.security;
+
+public class JWTService {
+
+}

@@ -1,0 +1,40 @@
+server.port=8080
+
+spring.application.name=quantity-measurement-app
+
+# =========================
+# Datasource
+# =========================
+
+spring.datasource.url=jdbc:h2:mem:quantitydb
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+
+# =========================
+# JPA
+# =========================
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+# =========================
+# OAuth2 Google Login
+# =========================
+
+spring.security.oauth2.client.registration.google.client-id=YOUR_GOOGLE_CLIENT_ID
+spring.security.oauth2.client.registration.google.client-secret=YOUR_GOOGLE_CLIENT_SECRET
+spring.security.oauth2.client.registration.google.scope=openid,profile,email
+
+# =========================
+# JWT
+# =========================
+
+app.jwt.secret=1234567890123456789012345678901234567890123456789012345678901234
+app.jwt.expiration=86400000
+
+# =========================
+# Logging
+# =========================
+
+logging.level.org.springframework.security=INFO

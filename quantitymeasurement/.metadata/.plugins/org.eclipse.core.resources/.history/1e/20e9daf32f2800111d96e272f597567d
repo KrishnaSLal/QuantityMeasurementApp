@@ -1,0 +1,5 @@
+package com.app.quantitymeasurement.service;
+
+public class AppUserService {
+
+}

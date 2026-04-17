@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.app.quantitymeasurement.service.QuantityMeasurementServiceImplTest
+-------------------------------------------------------------------------------
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 0.165 s -- in com.app.quantitymeasurement.service.QuantityMeasurementServiceImplTest

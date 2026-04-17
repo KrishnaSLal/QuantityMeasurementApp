@@ -1,0 +1,5 @@
+package com.app.quantitymeasurement.repository;
+
+public interface AppUserInterface {
+
+}
